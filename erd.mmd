@@ -1,0 +1,47 @@
+erDiagram
+    USERS ||--o{ ENROLMENTS : "makes"
+    EVENTS ||--o{ EVENTCATEGORIES : "offers"
+    CATEGORIES ||--o{ EVENTCATEGORIES : "grouped by"
+    EVENTCATEGORIES ||--o{ ENROLMENTS : "enrolled into"
+    ENROLMENTS ||--|| RESULTS : "produces"
+
+    USERS {
+        int UserID PK
+        string FullName
+        string Email
+        string PasswordHash
+        string RoleName
+        datetime CreatedAt
+    }
+    EVENTS {
+        int EventID PK
+        string Name
+        date EventDate
+        string Location
+        string Description
+        string Status
+    }
+    CATEGORIES {
+        int CategoryID PK
+        string Name
+        string Description
+    }
+    EVENTCATEGORIES {
+        int EventCategoryID PK
+        int EventID FK
+        int CategoryID FK
+    }
+    ENROLMENTS {
+        int EnrolmentID PK
+        int UserID FK
+        int EventCategoryID FK
+        datetime EnrolmentDate
+        string Status
+    }
+    RESULTS {
+        int ResultID PK
+        int EnrolmentID FK
+        time FinishTime
+        int Position
+        string Status
+    }
