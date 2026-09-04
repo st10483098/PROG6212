@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1050" font-family="Arial, Helvetica, sans-serif">
+  <rect width="1500" height="1050" fill="white"/>
+  <text x="750" y="40" text-anchor="middle" font-size="26" font-weight="bold">RaceDay System - Entity Relationship Diagram</text>
+
+  <!-- Style helper via repeated groups -->
+
+  <!-- USERS -->
+  <g>
+    <rect x="60" y="90" width="260" height="170" fill="#eaf2fb" stroke="#2c5f8a" stroke-width="2"/>
+    <rect x="60" y="90" width="260" height="34" fill="#2c5f8a"/>
+    <text x="190" y="114" text-anchor="middle" font-size="17" fill="white" font-weight="bold">USERS</text>
+    <text x="72" y="146" font-size="14" font-weight="bold">PK  UserID</text>
+    <text x="72" y="166" font-size="14">FullName</text>
+    <text x="72" y="186" font-size="14">Email (unique)</text>
+    <text x="72" y="206" font-size="14">PasswordHash</text>
+    <text x="72" y="226" font-size="14">RoleName (Admin/Athlete)</text>
+    <text x="72" y="246" font-size="14">CreatedAt</text>
+  </g>
+
+  <!-- EVENTS -->
+  <g>
+    <rect x="620" y="90" width="260" height="170" fill="#eaf2fb" stroke="#2c5f8a" stroke-width="2"/>
+    <rect x="620" y="90" width="260" height="34" fill="#2c5f8a"/>
+    <text x="750" y="114" text-anchor="middle" font-size="17" fill="white" font-weight="bold">EVENTS</text>
+    <text x="632" y="146" font-size="14" font-weight="bold">PK  EventID</text>
+    <text x="632" y="166" font-size="14">Name</text>
+    <text x="632" y="186" font-size="14">EventDate</text>
+    <text x="632" y="206" font-size="14">Location</text>
+    <text x="632" y="226" font-size="14">Description</text>
+    <text x="632" y="246" font-size="14">Status</text>
+  </g>
+
+  <!-- CATEGORIES -->
+  <g>
+    <rect x="1180" y="90" width="260" height="150" fill="#eaf2fb" stroke="#2c5f8a" stroke-width="2"/>
+    <rect x="1180" y="90" width="260" height="34" fill="#2c5f8a"/>
+    <text x="1310" y="114" text-anchor="middle" font-size="17" fill="white" font-weight="bold">CATEGORIES</text>
+    <text x="1192" y="146" font-size="14" font-weight="bold">PK  CategoryID</text>
+    <text x="1192" y="166" font-size="14">Name</text>
+    <text x="1192" y="186" font-size="14">Description</text>
+  </g>
+
+  <!-- EVENTCATEGORIES -->
+  <g>
+    <rect x="900" y="380" width="280" height="130" fill="#fdf1e3" stroke="#a86c1e" stroke-width="2"/>
+    <rect x="900" y="380" width="280" height="34" fill="#a86c1e"/>
+    <text x="1040" y="404" text-anchor="middle" font-size="16" fill="white" font-weight="bold">EVENTCATEGORIES</text>
+    <text x="912" y="436" font-size="14" font-weight="bold">PK  EventCategoryID</text>
+    <text x="912" y="456" font-size="14" font-weight="bold">FK  EventID</text>
+    <text x="912" y="476" font-size="14" font-weight="bold">FK  CategoryID</text>
+  </g>
+
+  <!-- ENROLMENTS -->
+  <g>
+    <rect x="380" y="600" width="280" height="150" fill="#eaf2fb" stroke="#2c5f8a" stroke-width="2"/>
+    <rect x="380" y="600" width="280" height="34" fill="#2c5f8a"/>
+    <text x="520" y="624" text-anchor="middle" font-size="16" fill="white" font-weight="bold">ENROLMENTS</text>
+    <text x="392" y="656" font-size="14" font-weight="bold">PK  EnrolmentID</text>
+    <text x="392" y="676" font-size="14" font-weight="bold">FK  UserID</text>
+    <text x="392" y="696" font-size="14" font-weight="bold">FK  EventCategoryID</text>
+    <text x="392" y="716" font-size="14">EnrolmentDate, Status</text>
+  </g>
+
+  <!-- RESULTS -->
+  <g>
+    <rect x="380" y="850" width="280" height="150" fill="#eaf2fb" stroke="#2c5f8a" stroke-width="2"/>
+    <rect x="380" y="850" width="280" height="34" fill="#2c5f8a"/>
+    <text x="520" y="874" text-anchor="middle" font-size="16" fill="white" font-weight="bold">RESULTS</text>
+    <text x="392" y="906" font-size="14" font-weight="bold">PK  ResultID</text>
+    <text x="392" y="926" font-size="14" font-weight="bold">FK  EnrolmentID (unique)</text>
+    <text x="392" y="946" font-size="14">FinishTime, Position</text>
+    <text x="392" y="966" font-size="14">Status</text>
+  </g>
+
+  <!-- Relationship lines with cardinality labels -->
+  <!-- Users 1 -- M Enrolments -->
+  <line x1="190" y1="260" x2="480" y2="600" stroke="black" stroke-width="2"/>
+  <text x="220" y="440" font-size="14" font-weight="bold">1</text>
+  <text x="440" y="590" font-size="14" font-weight="bold">M</text>
+
+  <!-- Events 1 -- M EventCategories -->
+  <line x1="750" y1="260" x2="1000" y2="380" stroke="black" stroke-width="2"/>
+  <text x="770" y="300" font-size="14" font-weight="bold">1</text>
+  <text x="970" y="375" font-size="14" font-weight="bold">M</text>
+
+  <!-- Categories 1 -- M EventCategories -->
+  <line x1="1300" y1="240" x2="1120" y2="380" stroke="black" stroke-width="2"/>
+  <text x="1270" y="270" font-size="14" font-weight="bold">1</text>
+  <text x="1140" y="375" font-size="14" font-weight="bold">M</text>
+
+  <!-- EventCategories 1 -- M Enrolments -->
+  <line x1="1000" y1="510" x2="640" y2="620" stroke="black" stroke-width="2"/>
+  <text x="960" y="530" font-size="14" font-weight="bold">1</text>
+  <text x="660" y="615" font-size="14" font-weight="bold">M</text>
+
+  <!-- Enrolments 1 -- 1 Results -->
+  <line x1="520" y1="750" x2="520" y2="850" stroke="black" stroke-width="2"/>
+  <text x="530" y="775" font-size="14" font-weight="bold">1</text>
+  <text x="530" y="835" font-size="14" font-weight="bold">1</text>
+
+  <!-- Legend -->
+  <rect x="60" y="990" width="18" height="18" fill="#eaf2fb" stroke="#2c5f8a"/>
+  <text x="86" y="1004" font-size="13">Entity</text>
+  <rect x="180" y="990" width="18" height="18" fill="#fdf1e3" stroke="#a86c1e"/>
+  <text x="206" y="1004" font-size="13">Junction / resolves M:M</text>
+  <text x="450" y="1004" font-size="13" font-style="italic">Note: EventCategories resolves the Event M:M Category relationship.</text>
+</svg>
