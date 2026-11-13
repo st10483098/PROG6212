@@ -1,15 +1,7 @@
-using System.Reflection;
-using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
-using RaceDay.Api.Data;
+using RaceDay.Mvc.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddDbContext<RaceDayContext>(o =>
-    o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// Session management (server-side session, cookie holds only the session id)
+builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(o =>
 {
@@ -17,29 +9,19 @@ builder.Services.AddSession(o =>
     o.Cookie.HttpOnly = true;
     o.Cookie.IsEssential = true;
 });
-
-builder.Services.AddControllers().AddJsonOptions(o =>
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddHttpClient<ApiService>(c =>
 {
-    o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-});
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "RaceDay API", Version = "v1" });
-    var xml = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
-    if (File.Exists(xml)) c.IncludeXmlComments(xml);
+    c.BaseAddress = new Uri(builder.Configuration["Api:BaseUrl"] ?? "http://localhost:5000/");
 });
 
 var app = builder.Build();
+if (!app.Environment.IsDevelopment())
+    app.UseExceptionHandler("/Home/Error");
 
-app.UseSwagger();
-app.UseSwaggerUI();
-if (!app.Environment.IsEnvironment("Testing")) app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
 app.UseSession();
 app.UseAuthorization();
-app.MapControllers();
+app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
 app.Run();
-
-public partial class Program { }
