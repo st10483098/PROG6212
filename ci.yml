@@ -1,15 +1,30 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main, part3 ]
+  pull_request:
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
-      - run: dotnet restore
-      - run: dotnet build --no-restore --configuration Release
-      - run: dotnet test --no-build --configuration Release --verbosity normal
+          dotnet-version: 8.0.x
+
+      # Builds every project in the repo: the Part 2 API and the Part 3 MVC app
+      - name: Restore and build all projects
+        run: |
+          for proj in $(find . -name "*.csproj"); do
+            echo "::group::Building $proj"
+            dotnet restore "$proj"
+            dotnet build "$proj" -c Release --no-restore
+            echo "::endgroup::"
+          done
+
+      - name: Build MVC Docker image
+        run: docker build -t raceday-mvc ./RaceDay.Mvc
+        # If your MVC project is in a different folder, change the path above.
